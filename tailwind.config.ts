@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,13 +11,35 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      textColor: {
+        primary: "var(--slate-12)",
+        secondary: "var(--slate-10)",
+      },
+      backgroundColor: {
+        primary: "var(--slate-1)",
+        secondary: "var(--slate-4)",
+        secondaryA: "var(--slate-a4)",
+        tertiary: "var(--slate-3)",
+        blur: "var(--blurBackground)",
+        header: "var(--headerBackground)",
+      },
+      borderColor: {
+        primary: "var(--slate-6)",
+      },
+      ringOffsetColor: {
+        primary: "var(--slate-12)",
+      },
+      keyframes: {
+        in: {
+          "0%": { transform: "translateY(18px)", opacity: 0 },
+          "100%": { transform: "translateY(0)", opacity: 1 },
+        },
+      },
+      animation: {
+        in: "in .6s both",
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
 export default config;
