@@ -11,6 +11,7 @@ import Link from "components/Link";
 import Image from "next/image";
 import Tags from "components/tags";
 import LikeButton from "components/likebutton";
+import Comment from "components/Comment";
 import MDXComponents from "components/MDXComponents";
 
 type PostProps = {
@@ -112,6 +113,7 @@ export default function Post({ post, related }: PostProps) {
           </div>
         ) : null}
       </div>
+      <Comment post={post} />
     </>
   );
 }
