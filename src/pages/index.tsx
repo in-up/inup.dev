@@ -1,10 +1,10 @@
 import { GetStaticProps } from "next";
 import { allPosts, allProjects, Post, Project } from ".contentlayer/generated";
 import { pick } from "@contentlayer2/client";
-
 import Link from "components/Link";
 import Section from "components/Section";
 import PostList from "components/postlist";
+import Image from "next/image";
 
 type HomeProps = {
   posts: Post[];
@@ -15,15 +15,25 @@ export default function Home({ posts, projects }: HomeProps) {
   return (
     <>
       <div className="flex flex-col gap-20 md:gap-28">
-        <div>
-          <h1 className="animate-in">Ahn SangHyeon</h1>
-          <p
-            className="text-secondary animate-in"
-            style={{ "--index": 1 } as React.CSSProperties}
-          >
-            안녕하세요. 개발자 안상현입니다.
-          </p>
+        <div className="flex flex-row items-center">
+          <Image
+            src="/avatar.png"
+            alt="profile image"
+            width={60}
+            height={60}
+            className="rounded-full mr-8 border border-primary"
+          />
+          <div>
+            <h1 className="animate-in">Ahn SangHyeon</h1>
+            <p
+              className="text-secondary animate-in"
+              style={{ "--index": 1 } as React.CSSProperties}
+            >
+              안녕하세요. 개발자 안상현입니다.
+            </p>
+          </div>
         </div>
+
         {/* <div
           className="flex flex-col gap-4 animate-in"
           style={{ "--index": 2 } as React.CSSProperties}
@@ -51,7 +61,7 @@ export default function Home({ posts, projects }: HomeProps) {
           className="flex flex-col items-start gap-8 animate-in"
           style={{ "--index": 3 } as React.CSSProperties}
         >
-          <h2>Pinned posts</h2>
+          <h2>Recent posts</h2>
           <PostList posts={posts} />
           <Link href="/blog" className="items-start underline">
             See all →
