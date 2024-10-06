@@ -14,6 +14,8 @@ const config: Config = {
       textColor: {
         primary: "var(--slate-12)",
         secondary: "var(--slate-10)",
+        alternative: "var(--slate-1)",
+        brand: "#1148b5",
       },
       backgroundColor: {
         primary: "var(--slate-1)",
@@ -22,6 +24,8 @@ const config: Config = {
         tertiary: "var(--slate-3)",
         blur: "var(--blurBackground)",
         header: "var(--headerBackground)",
+        alternative: "var(--slate-12)",
+        brand: "#1148b5",
       },
       borderColor: {
         primary: "var(--slate-6)",

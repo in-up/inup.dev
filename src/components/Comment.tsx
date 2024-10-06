@@ -12,6 +12,7 @@ type Comment = {
   content: string;
   created_at: string;
   is_admin: boolean;
+  name: string;
 };
 
 type CommentProps = {
@@ -26,7 +27,7 @@ export default function CommentBox({ post }: CommentProps) {
 
   const fetchComments = useCallback(async () => {
     setLoading(true);
-    let { data: comments, error } = await supabase
+    let { data, error } = await supabase
       .from("comment")
       .select("*")
       .eq("post_id", slug)
@@ -38,7 +39,14 @@ export default function CommentBox({ post }: CommentProps) {
       return;
     }
 
-    setComments(comments || []);
+    const comments = (data || []) as Comment[];
+
+    const commentsWithNames = comments.map((comment) => ({
+      ...comment,
+      name: comment.name || "익명",
+    }));
+
+    setComments(commentsWithNames);
     setLoading(false);
   }, [slug]);
 
@@ -50,11 +58,7 @@ export default function CommentBox({ post }: CommentProps) {
     comments.filter((comment) => comment.parent_id === parentId);
 
   return (
-    <>
-      <h2 className="text-xl font-bold mb-4">댓글</h2>
-
-      <SubmitBox slug={slug} fetchComments={fetchComments} />
-
+    <div className="mt-16">
       {loading ? (
         <IconLoading />
       ) : error ? (
@@ -67,9 +71,13 @@ export default function CommentBox({ post }: CommentProps) {
               key={comment.id}
               comment={comment}
               nestedComments={getNestedComments(comment.id)}
+              fetchComments={fetchComments}
+              slug={slug}
             />
           ))
       )}
-    </>
+
+      <SubmitBox slug={slug} fetchComments={fetchComments} />
+    </div>
   );
 }
