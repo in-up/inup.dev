@@ -1,11 +1,10 @@
-import { motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import { formatDate } from "@/lib/formatdate";
-import { EllipsisVertical } from "lucide-react";
-import { Menu } from "@headlessui/react";
-import cn from "clsx";
 import Profile from "./Profile";
 import SubmitBox from "./SubmitBox";
+import { supabase } from "@/lib/supabaseClient";
+import CommentMenu from "./CommentMenu";
+import messages from "@/lib/messages";
 
 type Comment = {
   id: number;
@@ -13,6 +12,7 @@ type Comment = {
   created_at: string;
   is_admin: boolean;
   name: string;
+  password_hash: string;
 };
 
 type CommentItemProps = {
@@ -32,95 +32,75 @@ export default function CommentItem({
 }: CommentItemProps) {
   const [showSubmitBox, setShowSubmitBox] = useState(false);
 
+  const handleDelete = async () => {
+    const deleteCode = prompt(messages.comment.promptInfo);
+    if (!deleteCode) return;
+
+    const { data: fetchedComment, error } = await supabase
+      .from("comment")
+      .select("password_hash")
+      .eq("id", comment.id)
+      .single();
+
+    if (error || !fetchedComment) {
+      alert(messages.comment.fetchError);
+      return;
+    }
+
+    const { data: isValidResponse, error: hashError } = await supabase.rpc(
+      "verify_password",
+      {
+        password: deleteCode,
+        hash: fetchedComment.password_hash,
+      }
+    );
+
+    if (hashError || !isValidResponse) {
+      alert(messages.comment.deleteValidationFailed);
+      return;
+    }
+
+    const { error: deleteError } = await supabase
+      .from("comment")
+      .update({ is_deleted: true })
+      .eq("id", comment.id);
+
+    if (deleteError) {
+      alert(messages.comment.deleteError);
+      return;
+    }
+
+    alert(messages.comment.deleted);
+    fetchComments();
+  };
+
   return (
     <div
-      className={cn("my-2 rounded-[1.25rem] px-2 py-3", {
-        "bg-tertiary pl-4 py-4": isNested,
-      })}
+      className={`my-2 rounded-[1.25rem] px-2 py-2 md:ml-2 ${isNested ? "bg-tertiary pl-4 py-4" : ""}`}
     >
       <div className="flex justify-between items-start">
         <div className="flex items-center">
-          <Profile imageSrc="/profile.png" alt={`${comment.name}'s profile`} />
-          <p className="font-bold mr-3">
-            {comment.is_admin ? "Admin" : comment.name}
+          <Profile
+            imageSrc={comment.is_admin ? "/avatar.png" : "/profile.png"}
+            alt={`${comment.name}'s profile`}
+          />
+          <p
+            className={`text-sm font-bold mr-3 ${comment.is_admin ? "text-brand" : ""}`}
+          >
+            {comment.is_admin ? comment.name + " (글쓴이)" : comment.name}
           </p>
+
           <span className="text-sm text-gray-500">
             {formatDate(comment.created_at, true)}
           </span>
         </div>
-        <Menu as="div" className="relative">
-          {({ open }) => (
-            <>
-              <Menu.Button
-                className={cn(
-                  "relative w-8 h-8 cursor-default rounded-full flex items-center justify-center focus:outline-none",
-                  open && "bg-secondaryA"
-                )}
-              >
-                <EllipsisVertical size={16} />
-              </Menu.Button>
-              <AnimatePresence>
-                {open && (
-                  <motion.ul
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ type: "spring", bounce: 0.3, duration: 0.3 }}
-                    className="absolute right-0 text-base origin-top-right shadow-lg max-h-60 w-30 whitespace-nowrap rounded-xl bg-blur backdrop-blur-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10"
-                  >
-                    <Menu.Items static>
-                      {!isNested && (
-                        <>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`relative cursor-default select-none py-2 px-4 rounded-t-xl z-20 ${active ? "bg-secondaryA" : "text-primary"}`}
-                                onClick={() =>
-                                  setShowSubmitBox((prev) => !prev)
-                                }
-                              >
-                                답글 달기
-                              </button>
-                            )}
-                          </Menu.Item>
-                          <div className="border-l border-primary" />
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`relative cursor-default text-left select-none py-2 px-4 rounded-b-xl z-20 w-full ${active ? "bg-secondaryA" : "text-primary"}`}
-                                onClick={() => {
-                                  // 삭제
-                                }}
-                              >
-                                삭제
-                              </button>
-                            )}
-                          </Menu.Item>
-                        </>
-                      )}
-                      {isNested && (
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`relative cursor-default select-none py-2 px-4 rounded-xl z-20 ${active ? "bg-secondaryA" : "text-primary"}`}
-                              onClick={() => {
-                                // 삭제
-                              }}
-                            >
-                              삭제
-                            </button>
-                          )}
-                        </Menu.Item>
-                      )}
-                    </Menu.Items>
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </>
-          )}
-        </Menu>
+        <CommentMenu
+          isNested={isNested}
+          onReply={() => setShowSubmitBox((prev) => !prev)}
+          onDelete={handleDelete}
+        />
       </div>
-      <p className="mt-2">{comment.content}</p>
+      <p className="mt-1 ml-9 text-sm">{comment.content}</p>
 
       {showSubmitBox && (
         <SubmitBox
@@ -130,7 +110,7 @@ export default function CommentItem({
         />
       )}
 
-      {/* 대댓글 */}
+      {/* nested comments */}
       {nestedComments.length > 0 && (
         <div className="ml-4 mt-4">
           {nestedComments.map((nestedComment) => (

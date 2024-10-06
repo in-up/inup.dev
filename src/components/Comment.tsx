@@ -4,6 +4,7 @@ import type { Post } from ".contentlayer/generated";
 import SubmitBox from "./SubmitBox";
 import { IconLoading } from "./Icons";
 import CommentItem from "./CommentItem";
+import messages from "@/lib/messages";
 
 type Comment = {
   id: number;
@@ -12,7 +13,9 @@ type Comment = {
   content: string;
   created_at: string;
   is_admin: boolean;
+  is_deleted: boolean;
   name: string;
+  password_hash: string;
 };
 
 type CommentProps = {
@@ -31,10 +34,11 @@ export default function CommentBox({ post }: CommentProps) {
       .from("comment")
       .select("*")
       .eq("post_id", slug)
+      .eq("is_deleted", false)
       .order("created_at", { ascending: true });
 
     if (error) {
-      setError("댓글을 불러오는 데 실패했습니다.");
+      setError(messages.comment.fetchError);
       setLoading(false);
       return;
     }
@@ -43,7 +47,7 @@ export default function CommentBox({ post }: CommentProps) {
 
     const commentsWithNames = comments.map((comment) => ({
       ...comment,
-      name: comment.name || "익명",
+      name: comment.name || "Anonymous",
     }));
 
     setComments(commentsWithNames);

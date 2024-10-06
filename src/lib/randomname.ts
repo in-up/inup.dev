@@ -9,7 +9,8 @@ const adjectives = [
     '엉뚱한',
     '근사한',
     '침착한',
-    '명량한'
+    '신중한',
+    '다정한'
 ];
 const animals = [
     '토끼', 
@@ -23,7 +24,9 @@ const animals = [
     '뱁새',
     '펭귄',
     '호박벌',
-    '파랑어치'
+    '파랑어치',
+    '햇병아리',
+    '알파카'
 ];
 
 const getRandomElem = <T>(arr: T[]): T => {
