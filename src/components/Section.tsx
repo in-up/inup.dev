@@ -16,7 +16,7 @@ export default function Section({
     <section className="flex flex-col md:flex-row gap-1 md:gap-9">
       <h2
         className={cn(
-          "md:w-28 text-secondary shrink-0",
+          "md:w-30 text-secondary shrink-0",
           headingAlignment === "right" && "md:text-right"
         )}
       >

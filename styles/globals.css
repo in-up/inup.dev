@@ -116,8 +116,8 @@ input:-webkit-autofill:focus {
 .like-button {
   background: radial-gradient(
     100% 478.52% at 0% 15.62%,
-    #e38244 0%,
-    #ebad64 100%
+    #0b2f93 0%,
+    #1247b5 100%
   );
   animation: pulse 2.5s infinite ease-out;
 }
@@ -133,20 +133,20 @@ input:-webkit-autofill:focus {
 @keyframes pulse {
   0% {
     box-shadow:
-      0px 0px 52px #eaa55f,
-      0px 0px 20px #ee9950,
+      0px 0px 52px #86aeff00,
+      0px 0px 20px #5677d500,
       inset 0px 1px 3px rgba(255, 255, 255, 0.22);
   }
   70% {
     box-shadow:
-      0px 0px 70px #eaa55f,
-      0px 0px 40px #ee9950,
+      0px 0px 70px #86aeff00,
+      0px 0px 40px #5677d500,
       inset 0px 1px 3px rgba(255, 255, 255, 0.22);
   }
   100% {
     box-shadow:
-      0px 0px 52px #eaa55f,
-      0px 0px 20px #ee9950,
+      0px 0px 52px #86aeff00,
+      0px 0px 20px #5677d500,
       inset 0px 1px 3px rgba(255, 255, 255, 0.22);
   }
 }

@@ -47,7 +47,7 @@ export default function Blog({ posts }: BlogProps) {
               className="text-secondary animate-in"
               style={{ "--index": 1 } as React.CSSProperties}
             >
-              I write about CSS, animation techniques, design systems and more.
+              개발에 대한 글을 작성합니다.
             </p>
           </div>
           <div

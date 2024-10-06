@@ -1,22 +1,37 @@
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 
 const HitCounter = ({ slug }: { slug: string }): JSX.Element => {
-  const [hits, setHits] = useState(undefined);
+  const [hits, setHits] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    // Don't count hits on localhost
     if (process.env.NODE_ENV !== "production") {
       return;
     }
-    // Invoke the function by making a request.
-    // Update the URL to match the format of your platform.
-    fetch(`/api/register-hit?slug=${slug}`)
-      .then((res) => res.json())
-      .then((json) => {
-        if (typeof json.hits === "number") {
-          setHits(json.hits);
-        }
-      });
+
+    const fetchAndUpdateHits = async () => {
+      const { data: post, error: fetchError } = await supabase
+        .from("post")
+        .select("view_count")
+        .eq("post_id", slug)
+        .single();
+
+      if (fetchError) {
+        await supabase.from("post").insert({ post_id: slug, view_count: 1 });
+
+        setHits(1);
+      } else {
+        const updatedViewCount = post.view_count + 1;
+        await supabase
+          .from("post")
+          .update({ view_count: updatedViewCount })
+          .eq("post_id", slug);
+
+        setHits(updatedViewCount);
+      }
+    };
+
+    fetchAndUpdateHits();
   }, [slug]);
 
   if (typeof hits === "undefined") {
@@ -25,7 +40,7 @@ const HitCounter = ({ slug }: { slug: string }): JSX.Element => {
 
   return (
     <>
-      <span> &middot;</span> {hits} Views
+      <span> &middot; </span> {hits} Views
     </>
   );
 };
