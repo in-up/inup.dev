@@ -15,7 +15,7 @@ const config: Config = {
         primary: "var(--slate-12)",
         secondary: "var(--slate-10)",
         alternative: "var(--slate-1)",
-        brand: "#1148b5",
+        brand: "var(--indigo-11)",
       },
       backgroundColor: {
         primary: "var(--slate-1)",
@@ -25,7 +25,7 @@ const config: Config = {
         blur: "var(--blurBackground)",
         header: "var(--headerBackground)",
         alternative: "var(--slate-12)",
-        brand: "#1148b5",
+        brand: "var(--indigo-11)",
       },
       borderColor: {
         primary: "var(--slate-6)",

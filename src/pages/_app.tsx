@@ -1,9 +1,8 @@
-import { ReactElement, ReactNode, useEffect } from "react";
+import { ReactElement, ReactNode } from "react";
 import { ThemeProvider } from "next-themes";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { Inter } from "next/font/google";
 
 import SEO from "./../components/seo";
 
@@ -18,8 +17,6 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
-
-const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export default function MyApp({
   Component,
@@ -46,7 +43,7 @@ export default function MyApp({
     >
       <style jsx global>{`
         html {
-          font-family: ${inter.style.fontFamily};
+          font-family: "Pretendard", sans-serif;
         }
       `}</style>
       <SEO />
