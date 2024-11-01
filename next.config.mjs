@@ -1,4 +1,24 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+const { withContentlayer } = require("next-contentlayer2"); // eslint-disable-line
 
-export default nextConfig;
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+//   images: {
+//     remotePatterns: [
+//       {
+//         protocol: "https",
+//         hostname: "dgtzuqphqg23d.cloudfront.net",
+//       },
+//       { protocol: "https", hostname: "image.mux.com" },
+//     ],
+//   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      require("./scripts/generate-sitemap");
+      require("./scripts/generate-rss");
+    }
+
+    return config;
+  },
+};
+
+module.exports = withContentlayer(nextConfig);
