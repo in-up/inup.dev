@@ -24,7 +24,7 @@ export default function CommentMenu({
               open && "bg-secondaryA"
             )}
           >
-            <EllipsisVertical size={16} />
+            <EllipsisVertical size={16} className="text-slate-400" />
           </Menu.Button>
           <AnimatePresence>
             {open && (

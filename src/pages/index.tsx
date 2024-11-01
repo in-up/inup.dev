@@ -16,15 +16,15 @@ export default function Home({ posts, projects }: HomeProps) {
     <>
       <div className="flex flex-col gap-20 md:gap-28">
         <div className="flex flex-row items-center">
-          <Image
+          {/* <Image
             src="/avatar.png"
             alt="profile image"
             width={60}
             height={60}
             className="rounded-full mr-8 border border-primary"
-          />
+          /> */}
           <div>
-            <h1 className="animate-in">Ahn SangHyeon</h1>
+            <h1 className="animate-in">Ahn Sang Hyeon</h1>
             <p
               className="text-secondary animate-in"
               style={{ "--index": 1 } as React.CSSProperties}

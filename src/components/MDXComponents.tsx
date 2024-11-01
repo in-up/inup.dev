@@ -24,12 +24,23 @@ const CustomLink: React.FC<CustomLinkProps> = (props) => {
   return <a target="_blank" rel="noopener noreferrer" {...props} />;
 };
 
+const H1: React.FC = (props) => (
+  <h1 className="text-3xl font-bold" {...props} />
+);
+const H2: React.FC = (props) => (
+  <h3 className="text-2xl font-bold" {...props} />
+);
+const H3: React.FC = (props) => <h4 className="text-xl font-bold" {...props} />;
+
 const MDXComponents = {
   Image: CustomImage,
   Video: Video,
   a: CustomLink,
   Link: CustomLink,
   Warning: Warning,
+  h1: H1,
+  h2: H2,
+  h3: H3,
 };
 
 export default MDXComponents;

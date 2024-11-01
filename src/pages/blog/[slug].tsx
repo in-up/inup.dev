@@ -82,7 +82,7 @@ export default function Post({ post, related }: PostProps) {
           )}
           <div className="h-8" />
           <div className="flex flex-col gap-3">
-            <h1 className="text-2xl font-semibold">{post.title}</h1>
+            <h1 className="text-3xl font-bold">{post.title}</h1>
             <p className="text-secondary">
               <time dateTime={post.publishedAt}>
                 {formatDate(post.publishedAt)}

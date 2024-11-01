@@ -13,7 +13,7 @@ const config: Config = {
     extend: {
       textColor: {
         primary: "var(--slate-12)",
-        secondary: "var(--slate-10)",
+        secondary: "var(--slate-11)",
         alternative: "var(--slate-1)",
         brand: "var(--indigo-11)",
       },
