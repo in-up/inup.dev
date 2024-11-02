@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "contentlayer2 build && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "./node_modules/.bin/tsc",
+    "cache-clear": "./node_modules/.bin/contentlayer build --verbose --clearCache"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.7",
