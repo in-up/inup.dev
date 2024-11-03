@@ -5,9 +5,9 @@ const HitCounter = ({ slug }: { slug: string }): JSX.Element => {
   const [hits, setHits] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== "production") {
-      return;
-    }
+    // if (process.env.NODE_ENV !== "production") {
+    //   return;
+    // }
 
     const fetchAndUpdateHits = async () => {
       const { data: post, error: fetchError } = await supabase
@@ -40,7 +40,7 @@ const HitCounter = ({ slug }: { slug: string }): JSX.Element => {
 
   return (
     <>
-      <span> &middot; </span> {hits} Views
+      <span>&nbsp;&nbsp;&middot;&nbsp;&nbsp;</span> {hits} 읽음
     </>
   );
 };
